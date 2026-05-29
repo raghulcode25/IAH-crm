@@ -371,26 +371,10 @@ export default function UserAdministration({
                             <Pencil className="w-3.5 h-3.5" />
                           </button>
 
-                          {isSelf || isProtected ? (
-                            <span className="text-[10px] text-zinc-550 italic pr-1">Guarded</span>
-                          ) : (
-                            <button
-                              onClick={() => {
-                                if (confirm(`Are you completely sure you want to revoke portal security clearance for ${dirUser.name}?`)) {
-                                  onDeleteUser(dirUser.username);
-                                  setSuccessMsg(`Account for "${dirUser.name}" successfully removed.`);
-                                  setTimeout(() => setSuccessMsg(null), 3000);
-                                  if (editingUser?.username === dirUser.username) {
-                                    handleCancelEdit();
-                                  }
-                                }
-                              }}
-                              className="text-zinc-500 hover:text-rose-450 p-1 rounded hover:bg-zinc-800 transition-colors cursor-pointer"
-                              title="Revoke User Account"
-                            >
-                              <Trash2 className="w-3.5 h-3.5" />
-                            </button>
-                          )}
+                          <div className="flex items-center gap-1.5 text-zinc-500 text-[10px] pr-1 select-none" title="Deletions not permitted for managers">
+                            <Lock className="w-3 w-3 text-zinc-600 shrink-0" />
+                            <span>Guarded</span>
+                          </div>
                         </div>
                       </td>
                     </tr>

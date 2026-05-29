@@ -11,7 +11,8 @@ import {
   Search, 
   X, 
   Sparkles,
-  AlertCircle
+  AlertCircle,
+  Lock
 } from 'lucide-react';
 import { Lead, UploadHistory, LeadStatus } from '../types';
 
@@ -522,17 +523,11 @@ export default function DatabaseMaintenance({
                           </button>
                           
                           <button
-                            onClick={() => {
-                              if (confirm(`Are you sure you want to permanently delete Dr. ${lead.providerName}?`)) {
-                                onDeleteLead(lead.id);
-                                setSuccessMsg(`Permanently deleted Dr. ${lead.providerName}`);
-                                setTimeout(() => setSuccessMsg(null), 3000);
-                              }
-                            }}
-                            className="bg-zinc-800/60 hover:bg-rose-950/40 hover:text-rose-400 text-zinc-400 p-2 rounded-lg transition-transform active:scale-90 cursor-pointer"
-                            title="Delete Record"
+                            disabled
+                            className="bg-zinc-900 text-zinc-600 p-2 rounded-lg cursor-not-allowed opacity-55"
+                            title="Deletions not permitted for managers"
                           >
-                            <Trash2 className="w-3.5 h-3.5" />
+                            <Lock className="w-3.5 h-3.5 text-zinc-500" />
                           </button>
                         </div>
                       </td>

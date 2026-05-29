@@ -53,12 +53,22 @@ export default function App() {
     return savedUser ? JSON.parse(savedUser) : null;
   });
 
-  const [users, setUsers] = useState<User[]>(DEFAULT_USERS);
+  const [users, setUsers] = useState<User[]>(() => {
+    const saved = localStorage.getItem('lead_portal_users');
+    return saved ? JSON.parse(saved) : DEFAULT_USERS;
+  });
   const [activeScreen, setActiveScreen] = useState<'database' | 'allocation' | 'agent-queue' | 'reports' | 'users'>('database');
-  const [leads, setLeads] = useState<Lead[]>([]);
-  const [uploads, setUploads] = useState<UploadHistory[]>([]);
+  const [leads, setLeads] = useState<Lead[]>(() => {
+    const saved = localStorage.getItem('lead_portal_leads');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [uploads, setUploads] = useState<UploadHistory[]>(() => {
+    const saved = localStorage.getItem('lead_portal_uploads');
+    return saved ? JSON.parse(saved) : [];
+  });
   const [activeAgent, setActiveAgent] = useState<string>('');
   const [currentTime, setCurrentTime] = useState<string>('');
+  const [isSeeded, setIsSeeded] = useState(false);
 
   // Derived list of assignable agents (Employees)
   const agents = users.filter(u => u.role === 'Employee').map(u => u.name);
@@ -125,11 +135,32 @@ export default function App() {
         }
       } catch (e) {
         console.error("Database seeding/check error:", e);
+      } finally {
+        setIsSeeded(true);
       }
     };
 
     seedDatabaseIfEmpty();
   }, []);
+
+  // Sync changes back to localStorage to support cold boots and refresh survival
+  useEffect(() => {
+    if (isSeeded) {
+      localStorage.setItem('lead_portal_users', JSON.stringify(users));
+    }
+  }, [users, isSeeded]);
+
+  useEffect(() => {
+    if (isSeeded) {
+      localStorage.setItem('lead_portal_leads', JSON.stringify(leads));
+    }
+  }, [leads, isSeeded]);
+
+  useEffect(() => {
+    if (isSeeded) {
+      localStorage.setItem('lead_portal_uploads', JSON.stringify(uploads));
+    }
+  }, [uploads, isSeeded]);
 
   // Real-time listener for users
   useEffect(() => {
