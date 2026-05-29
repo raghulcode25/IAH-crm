@@ -1,0 +1,6 @@
+{
+  "name": "IAH CRM TOOl",
+  "description": "A desktop-style dark-themed lead lifecycle, work allocation, agent queue, and reports management system for outreach workflow.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

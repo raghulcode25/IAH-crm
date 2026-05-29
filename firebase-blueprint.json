@@ -1,0 +1,76 @@
+{
+  "entities": {
+    "Comment": {
+      "title": "Comment",
+      "description": "An internal interaction comment/call note logged on a lead",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "author": { "type": "string" },
+        "text": { "type": "string" },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["id", "author", "text", "timestamp"]
+    },
+    "Lead": {
+      "title": "Lead",
+      "description": "Provider profile with assigned agent tracking, status, and communication notes",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "providerName": { "type": "string" },
+        "specialty": { "type": "string" },
+        "city": { "type": "string" },
+        "state": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "uploadedDate": { "type": "string" },
+        "uploadId": { "type": "string" },
+        "status": { "type": "string", "enum": ["Leads", "Not Interested", "DND", "Follow-Up", "Lead"] },
+        "agentAssigned": { "type": "string" },
+        "comments": { "type": "array" },
+        "followUpDate": { "type": "string" },
+        "workedDate": { "type": "string" }
+      },
+      "required": ["id", "providerName", "uploadedDate", "uploadId", "status", "comments"]
+    },
+    "UploadHistory": {
+      "title": "UploadHistory",
+      "description": "Tracks CSV upload history in the shared data pool",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "fileName": { "type": "string" },
+        "uploadDate": { "type": "string" },
+        "recordCount": { "type": "number" }
+      },
+      "required": ["id", "fileName", "uploadDate", "recordCount"]
+    },
+    "User": {
+      "title": "User",
+      "description": "Application user account representing a Manager or Employee agent",
+      "type": "object",
+      "properties": {
+        "username": { "type": "string" },
+        "name": { "type": "string" },
+        "role": { "type": "string", "enum": ["Manager", "Employee"] },
+        "password": { "type": "string" }
+      },
+      "required": ["username", "name", "role", "password"]
+    }
+  },
+  "firestore": {
+    "leads/{leadId}": {
+      "schema": "Lead",
+      "description": "Shared directory of physician/provider leads and outreach tracking"
+    },
+    "uploads/{uploadId}": {
+      "schema": "UploadHistory",
+      "description": "Records of file uploads to the system"
+    },
+    "users/{username}": {
+      "schema": "User",
+      "description": "Registered user accounts for accessing the platform"
+    }
+  }
+}
